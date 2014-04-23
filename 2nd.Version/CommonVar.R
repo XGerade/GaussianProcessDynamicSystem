@@ -1,6 +1,6 @@
 #Model Data Size
 ForcesStart <- 1
-ForcesEnd <- 6
+ForcesEnd <- 10
 numForces <- ForcesEnd - ForcesStart + 1
 numTime <- 200
 dataSize <- numForces * numTime

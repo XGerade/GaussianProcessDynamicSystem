@@ -4,7 +4,7 @@ source("CommonVar.R")
 x.data <- matrix(0, dataSize, 6)
 y.data <- matrix(0, dataSize, 4)
 base = 0
-for (Fm in 1 : numForces){
+for (Fm in ForcesStart : ForcesEnd) {
 #Original State of the system
     theta_initial <- -0.15
     theta_1_initial <- -1

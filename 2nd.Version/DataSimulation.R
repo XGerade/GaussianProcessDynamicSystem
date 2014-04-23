@@ -1,16 +1,25 @@
 source("CommonVar.R")
 
+#theta_initialPH <- -0.15
+#theta_1_initialPH <- -1
+#x_initialPH <- 1
+#x_1_initialPH <- 3
+#theta_initialGP <- -0.15
+#theta_1_initialGP <- -1
+#x_initialGP <- 1
+#x_1_initialGP <- 3
+
 theta_initialPH <- -0.15
 theta_1_initialPH <- -1
-x_initialPH <- 1
+x_initialPH <- 2
 x_1_initialPH <- 3
 theta_initialGP <- -0.15
 theta_1_initialGP <- -1
-x_initialGP <- 1
+x_initialGP <- 2
 x_1_initialGP <- 3
 
 statePH <- matrix(0, timeLength, 6)
-Fm = 2.5
+Fm = 3.5
 
 source("PhysicalCore.R")
 
@@ -43,7 +52,7 @@ for (i in 1: timeLength) {
     stateGP[i, 6] <- tao
 
 
-    next2State <- gpNextState(list(theta = theta_initialGP, theta_1 = theta_1_initialGP, x = x_initialGP, x_1 = x_1_initialGP, F = F, tao = tao))
+    next2State <- gpNextState(list(theta = theta_initialGP, theta_1 = theta_1_initialGP, x = x_initialGP, x_1 = x_1_initialGP, F = F, tao = tao), 0)
     next3State <- getNextState(list(theta = theta_initialGP, theta_1 = theta_1_initialGP, x = x_initialGP, x_1 = x_1_initialGP, F = F, tao = tao))
     if (i != timeLength) {
         x_initialPH <- next1State$x
