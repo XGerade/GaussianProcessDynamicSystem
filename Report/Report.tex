@@ -75,7 +75,7 @@
 \abstract{This seminar paper is mainly about the implementation and
   application of the gaussian process. First we propose the dynamic
   system we are using. Then we use the gaussian process tring to
-  predict the behavior of the system and further controling the system.}
+  predict the behavior of the system and further control the system.}
 
 \section{Introduction}
 \subsection{Background and Motivation}
@@ -91,12 +91,13 @@ the status (position, speed and acceleration) to the control signal
 
 Normally, the input and output are denoted as \textbf{x} and \textbf{y}. They
 usually are represented both as vectors. Representation of the input
-\textbf{x} could be from image (as a 256-dimemsional vector from a $16
+\textbf{x} could be pixel-values from image (as a 256-dimemsional vector from a $16
 \times 16$ image data) or measurements from observations (sensor data
 from the robotic). For each input, its corresponding output \textbf{y} could be either
 discreate (in classification case) or continuous (in regression
 case).\\
 
+In our project, the main concerns is on regression problems.
 In order to solve the regression problem, there are generally two
 approaches. The first one is to assume that the mapping function lies in a
 restricted class (ex. polynomial function). The second approach is
@@ -128,14 +129,13 @@ change, applied to this system (somtimes in order to make the system
 stable).\\
 
 In \cite{Kocijan2003, Nguyen-Tuong2008, Azman2008},
-various researches on the dynamic system control are made (including robotic
+various researches on the dynamic system control are covered (including robotic
 and human motion model). Here in our project, we choose the cart-pole
 control system \cite{Brownlee2005} as main concerns. In this system,
-things that could be done would be divided into two kinds. One is
-given the whole status and the control signal applied to the system,
-gaussian process could be used to predict the behavior. Another
-application is that the gaussian process is really useful to control
-a physical system in order to maintain system in an stable state
+things that could be done would be divided into two kinds. One is to predict the system behavior by using only the
+initial status and the control signal that is applied to the system. Another
+application is to use the gaussian process to help controlling
+the physical system in order to avoid the system fall into an bad state
 (ex. pole falling in the middle of control).\\
 
 The most fascinating aspect of using the gaussian process is that this
@@ -146,31 +146,32 @@ and consistency view with a computational tractability.\\
 In this project, we first go through the physicall dynamic
 system. The system we choose is the cart-pole system which a force (variable) is
 applied to the cart trying to let the pole on the cart to not fall down
-and the cart to be relatively still. After a study of how this system
-works, we tried to use gaussian process to model the system. The
+and the cart to be relatively still. After the study of how this system
+works, we try to use gaussian process to model the system. The
 learning process is based on some pre-observations of the system. In
 order to check the learning results, we examine the prediction of the
-system under the gaussian process model and compare it to the real
-behavior of the system.\\
+system under the gaussian process model and compare it to the simulated
+behavior of the system under a physical model.\\
 
 The gaussian process could also be used to control this system. In
-order to let the cart to be still and pole to not fall down, we need
+order to let the cart to be relatively still and pole to not fall down, we need
 to first let the gaussian process give predictions of the next state
 of the system resulted from several applying forces. Then, the most
-propable forced (ex. which let the system more closed to the really
-statble state). After applying the forces and get the observation from
-the really physical system, the model may decide learn or not learn
- base on the accuracy of its previous assumption.\\ 
+propable force (ex. which let the system more closed to the really
+statble state) will be chosen. After applying the forces and get the observation from
+the really physical system, the model may decide learn or not learn from the observation
+ based on the accuracy of its prediction.\\
 
 \subsection{Outline}
 
 The report is structured as below. The first section give an overview
 of the cart-pole system and how this system change from state to state
-under a given forces. The Gaussian Process related part lies in the
+under a given forces. A general idea of how to control the system can also be found in this section.
+The Gaussian Process related part lies in the
 second section where you can find the mathematical fundamental of the
 gaussian process as well as the learning model for the prediction
 tasks and the controlling model which is devised for the purpose to
-let the system not ''die''. As there are many codes in this project,
+let the system not ''die''. As all covered equations and models have already implemented in this project,
 the next section is used to give the structure on the code
 implementation in this project. In the section 5 can you find
 the results analysis. The analysises are devided into two part
@@ -178,7 +179,7 @@ corresponding the two usage scenario. We give our conclusion in the
 section 6.\\ 
 
 \section{Cart-Pole Control System}
-A typical Cart-Pole System consist mainly of two parts. One is cart
+A typical Cart-Pole System consists mainly of two parts. One is cart
 which can move horizontally across the plane. In some control cases,
 there is a range restriction on the position of the cart. On the cart
 there is a pole which could be rotated from angle to angle. An example
@@ -187,7 +188,7 @@ the system would be given a state. In this system, a state is consist
 of the posistion and the velocity of the cart, and the angle and the
 angle velocity of the pole.\\
 
-\begin{figure}[h!]
+\begin{figure}[!]
 \begin{center}
 \includegraphics[width=5cm]{cart-pole.png}
 \caption{Cart-Pole System\cite{Brownlee2005}}
@@ -233,7 +234,7 @@ x_{t+1} = x_t + \rho x'_t, x'_{t+1} = x'_t + \rho x''_t
 \end{center}
 
 Additionally, to achieve the bang-bang control, each time slice we
-need to decide which force we are given to the cart. In a simple case,
+need to decide which force we are giving to the cart. In a simple case,
 we could just drive the system with forces in the same magnitude (two
 directions). For the direction of the forces, we use the following
 equation to decide \cite{Brownlee2005}.
@@ -250,7 +251,7 @@ system is far away from the stable state, this control function could
 fail at last. The figure \ref{fail-control} gives us an example of the
 control's failure.\\
 
-\begin{figure}[h!]
+\begin{figure}[!]
 \begin{center}
 \includegraphics[width=14cm]{fail-control.png}
 \caption{An example of failed control}
@@ -265,7 +266,7 @@ the control is actually failed. When we set the initial state and the
 force at a suitable value, the system behavior would be seen like in
 figure \ref{success-control}.\\
 
-\begin{figure}[h!]
+\begin{figure}[!]
 \begin{center}
 \includegraphics[width=14cm]{success-control.png}
 \caption{An example of successful control}
@@ -275,7 +276,7 @@ figure \ref{success-control}.\\
 
 \section{Learning and Controlling the System}
 In this section, we will first go through the basics of the gaussian
-process. Then applications of Gaussian process will be discussed.
+process. Then, applications of Gaussian process will be discussed.
 Applications in a dynamic system using gaussian process could be
 devided into two part. Applications of the first part are doing the
 learning job. They mainly try to predict the behavior of the
@@ -284,7 +285,7 @@ applied forces at each time slice are also provided. Another part
 covers the applications trying to control this system. So, in these
 application scenes, each time slice, the state can be retrieved. The
 application should decide the force with its maginitude and
-direction.\\
+direction. We begin the discussion with the introduction of Gaussian process.\\
 \subsection{Gaussian Process}
 Guassian process is a generalization of the Gaussian probability
 distribution. It is defined as follow \cite{Rasmussen2006}:
@@ -358,13 +359,13 @@ In our learning model, state of each time slice will be alternatively
 predicted based on the previous time slice. And in the cart-pole
 system, input vectors are 6-dimensional and outputs are 4-dimensional
 vectors. So at each time slice, we solve each element in
-the output vector seperately and put them all together with as the
+the output vector seperately and put them all together as the
 output of whole one-step prediction process. Figure
 \ref{learning-model} shows the structure of the learning model.\\
 
-\begin{figure}[h!]
+\begin{figure}[!]
 \begin{center}
-\includegraphics[width=8cm]{learning-model.png}
+\includegraphics[width=10cm]{learning-model.png}
 \caption{Design of Learning Model}
 \label{learning-model}
 \end{center}
@@ -373,10 +374,10 @@ output of whole one-step prediction process. Figure
 \subsection{The Control Model}
 In the control scene, the input of the model at each time slice $t$ is the
 state of the cart-pole system. In response to the state, our model
-need to output the magnitude and direction of the force applying to
+need to signal the magnitude and direction of the force applying to
 the system. So here, we denote the input as $s_t$. And the
 output is $F_t$.\\
-\begin{figure}[h!]
+\begin{figure}[!]
 \begin{center}
 \includegraphics[width=8cm]{control-model.png}
 \caption{Design of Control Model}

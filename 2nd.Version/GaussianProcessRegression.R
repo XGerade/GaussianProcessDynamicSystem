@@ -22,7 +22,7 @@ GP.reg <- function(x.train, y, x.test, sigma.squared, K.xx){
   return(out)
 }
 
-calculateCovariance <- function(x.1, x.2, ell = 1){
+calculateCovariance <- function(x.1, x.2, ell = 1.7){
 
   covar <- matrix(0, dim(x.1)[1], dim(x.2)[1])
   for (i in 1: dim(x.1)[1]) {

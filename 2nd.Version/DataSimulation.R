@@ -19,7 +19,7 @@ x_initialGP <- 2
 x_1_initialGP <- 3
 
 statePH <- matrix(0, timeLength, 6)
-Fm = 3.5
+Fm = 4.5
 
 source("PhysicalCore.R")
 

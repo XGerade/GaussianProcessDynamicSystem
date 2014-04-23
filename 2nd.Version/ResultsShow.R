@@ -1,8 +1,8 @@
 source("CommonVar.R")
-#load("Sim_Results.RData")
-#load("GP_Results.RData")
-load("[1-9 3.5]GP_results.RData")
-load("[1-9 3.5]Sim_Results.RData")
+load("Sim_Results.RData")
+load("GP_Results.RData")
+#load("[1-9 3.5]GP_results.RData")
+#load("[1-9 3.5]Sim_Results.RData")
 
 timeLength = dim(stateGP)[1]
 timeLength = 300
@@ -46,7 +46,7 @@ plot(NULL, col = 'white', main = 'state of x\'', xlim = c(0, timeLength * 0.02),
 time <- seq(from = 0, to = timeLength * 0.02 - 0.02, by = 0.02)
 
 points(time, statePH[, 4], col = 'green', type = 'l')
-points(time, stateCP[, 4], col = 'blue', type = 'l')
-points(time, stateGP[, 4], col = 'red', type = 'l')
 points(time, stateGP[, 4] + stateCovGP[, 4], col = 'grey', type = 'l')
 points(time, stateGP[, 4] - stateCovGP[, 4], col = 'grey', type = 'l')
+points(time, stateCP[, 4], col = 'blue', type = 'l')
+points(time, stateGP[, 4], col = 'red', type = 'l')
