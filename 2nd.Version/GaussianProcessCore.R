@@ -16,11 +16,9 @@ gpNextState <- function(inState, xflag = 0) {
     theta_1 <- GP.reg(x.data, y.data[, 2], xInput, sigma.squared, K.xx)
     x_1 <- GP.reg(x.data, y.data[, 4], xInput, sigma.squared, K.xx)
 
-    if (xflag == 0) {
-        x <- GP.reg(x.data, y.data[, 3], xInput, sigma.squared, K.xx)
-    } else {
-        x <- list(post.mean = c(x_initial + tao * x_1_initial), post.var = c(x_1$post.var[1]))
-    }
+    x <- GP.reg(x.data, y.data[, 3], xInput, sigma.squared, K.xx)
+
+    #x <- list(post.mean = c(x_initial + tao * x_1_initial), post.var = c(x_1$post.var[1]))
     
     out <- list(x = x$post.mean[1], xCov = x$post.var[1], x_1 = x_1$post.mean[1], x_1Cov = x_1$post.var[1], theta = theta$post.mean[1], thetaCov = theta$post.var[1], theta_1 = theta_1$post.mean[1], theta_1Cov = theta_1$post.var[1])
     return(out)

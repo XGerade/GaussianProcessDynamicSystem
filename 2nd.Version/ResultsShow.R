@@ -1,10 +1,14 @@
 source("CommonVar.R")
-load("Sim_Results.RData")
-load("GP_Results.RData")
-#load("[1-9 3.5]GP_results.RData")
-#load("[1-9 3.5]Sim_Results.RData")
+#load("Sim_Results.RData")
+#load("GP_Results.RData")
+load("[1-9 3.5]GP_results.RData")
+load("[1-9 3.5]Sim_Results.RData")
 
 timeLength = dim(stateGP)[1]
+timeLength = 300
+statePH = statePH[1:300,]
+stateGP = stateGP[1:300,]
+stateCP = stateCP[1:300,]
 par(mfrow=c(2,2))
 
 plot(NULL, col = 'white', main = 'state of theta', xlim = c(0, timeLength * 0.02), ylim = c(min(c(stateGP[,1], statePH[,1])), max(c(stateGP[,1],statePH[,1]))), xlab = 'time', ylab = 'theta')

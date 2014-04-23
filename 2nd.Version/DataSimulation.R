@@ -52,7 +52,7 @@ for (i in 1: timeLength) {
     stateGP[i, 6] <- tao
 
 
-    next2State <- gpNextState(list(theta = theta_initialGP, theta_1 = theta_1_initialGP, x = x_initialGP, x_1 = x_1_initialGP, F = F, tao = tao), 0)
+    next2State <- gpNextState(list(theta = theta_initialGP, theta_1 = theta_1_initialGP, x = x_initialGP, x_1 = x_1_initialGP, F = F, tao = tao))
     next3State <- getNextState(list(theta = theta_initialGP, theta_1 = theta_1_initialGP, x = x_initialGP, x_1 = x_1_initialGP, F = F, tao = tao))
     if (i != timeLength) {
         x_initialPH <- next1State$x
